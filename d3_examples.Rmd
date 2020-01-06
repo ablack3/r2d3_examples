@@ -1,0 +1,174 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+```{r setup}
+library(r2d3)
+data = c(5, 11, 18)
+```
+
+
+# A simple barchart 
+```{d3 data=data}
+
+svg.selectAll("rect")
+  .data(data)
+  .enter().append("rect")
+  .attr("height", function(d, i){ return d*15;})
+  .attr("width", "50")
+  .attr("fill", "pink")
+  .attr("x", function(d, i){ return 60*i;})
+  .attr("y", function(d, i){ return 300 - (d*15)})
+
+var newX = 300;
+svg.selectAll("circle.first")
+  .data(data)
+  .enter().append("circle")
+  .attr("class", "first")
+  // x is previous x + diameter + gap
+  .attr("cx", function(d,i){ newX += d*3 + i*20 ; return newX; })
+  .attr("cy", "100")
+  // only need d if only data needed
+  .attr("r", function(d){ return d*3 }) // radius is 3
+```
+
+
+```{d3, data = data}
+
+svg.selectAll("ellipse")
+  .data(data)
+  .enter().append("ellipse")
+  .attr("cx", function(d, i){ return d*15;})
+  .attr("cy", "50")
+  .attr("fill", "pink")
+  .attr("rx", function(d, i){ return 60*i;})
+  .attr("ry", function(d, i){ return 300 - (d*15)})
+```
+
+
+```{d3, data = data}
+// to add new shapes to the same data we need to use classes like so
+var newX = 100;
+svg.selectAll("ellipse")
+  .data(data)
+  .enter().append("ellipse")
+  .attr("cx", function(d,i){ newX += d*3 + i*20 ; return newX; })
+  .attr("cy", "100")
+  .attr("rx", function(d, i){ return d*3 }) 
+  .attr("ry", "5") 
+//  .attr("cx", function(d, i){ return d*15;})
+//  .attr("cy", "50")
+//  .attr("rx", function(d, i){ return 60*i;})
+//  .attr("ry", function(d, i){ return 300 - (d*15)})
+//  .attr("ry", function(d, i){ return (d)})
+  .attr("fill", "pink")
+```
+
+
+
+```{d3 data=data}
+
+var newX = 100;
+svg.selectAll("line")
+  .data(data)
+  .enter().append("line")
+  .attr("x1", newX)
+  .attr("y1", function(d, i){ return 80 + i*20 })
+  .attr("x2", function(d, i){ return newX + (d*15) }) 
+  .attr("y2", function(d, i){ return 80 + i*20 })
+  //.style("stroke", "green") // alternative way of styling an element 
+  .attr("stroke", "blue")
+  .attr("stroke-width", "2")
+  
+  // style > css > attr
+  // use css first, then attr, then style
+  // generally avoid element styles
+  
+```
+
+can also add polygons and poly lines. 
+
+```{d3, data=data}
+
+var newX = 100;
+svg.append("text").text("hello d3 text")
+  .attr("x", newX)
+  .attr("y", 150)
+  .attr("font-size", "30")
+
+```
+
+```{d3, data=data}
+var newX = 100;
+
+svg.append("text")
+  .attr("x", newX)
+  .attr("y", 150)
+  .attr("fill", "none")
+  .attr("stroke", "blue")
+  .attr("stroke-width", "2")
+  .attr("font-size", "30")
+  .attr("text-anchor", "start")
+  .attr("dominant-baseline", "middle")
+  .text("start")
+  
+  svg.append("text")
+  .attr("x", newX)
+  .attr("y", 180)
+  .attr("fill", "blue")
+  .attr("stroke", "none")
+  .attr("stroke-width", "2")
+  .attr("font-size", "30")
+  .attr("text-anchor", "middle")
+  .attr("dominant-baseline", "middle")
+  .text("middle")
+  
+svg.append("text")
+  .attr("x", newX)
+  .attr("y", 210)
+  .attr("fill", "none")
+  .attr("stroke", "blue")
+  .attr("stroke-width", "2")
+  .attr("font-size", "30")
+  .attr("text-anchor", "end")
+  .attr("dominant-baseline", "middle")
+  .text("end")
+  
+svg.append("line")
+  .attr("x1", newX)
+  .attr("y1", "150")
+  .attr("x2", newX)
+  .attr("y2", "210")
+  .attr("stroke", "red")
+  
+  // to align test use the attributes text-anchor for horizontal alignment
+  // and dominant-baseline for vertical alignment
+  
+
+```
+
+How do you add text on multiple lines? Use tspan.
+```{d3}
+var newX = 100;
+var textArray = ['start', 'middle', 'end'];
+
+svg.append("text").selectAll("tspan")
+  .data(textArray)
+  .enter().append("tspan")
+  .attr("x", newX)
+  .attr("y", function(d, i){ return 150 + i*30; })
+  .attr("fill", "none")
+  .attr("stroke", "blue")
+  .attr("stroke-width", "2")
+  .attr("font-size", "30")
+  .attr("text-anchor", "start")
+  .attr("dominant-baseline", "middle")
+  .text(function(d){ return d; })
+```
+
+
+
+
